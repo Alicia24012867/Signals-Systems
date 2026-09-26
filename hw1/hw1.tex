@@ -1,0 +1,471 @@
+\documentclass[UTF8, fontset=fandol,12pt, a4paper]{ctexart}
+
+\usepackage{amsmath, amssymb}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\pgfplotsset{compat=1.18}
+\usepackage[margin=2.5cm]{geometry}
+
+\title{信号与系统分析-hw1}
+\author{黄泱博 \quad 2024012867}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section* {第一题}
+
+\subsection{$x_2(t) = e^{(-1+j)t}$}
+
+$x_2(t)$ 不是周期信号，因为$\lvert x_2(t) \rvert$ = $e^{-t}$ 随时间单调递减。
+
+\subsection{$x_3[n] = e^{j7\pi n}$}
+
+$x_3[n]$ 是周期信号， 因为$\omega = 7\pi, \frac{\omega}{2\pi} = \frac{7}{2} \in \mathbb{Q}$，由上亦有：基波周期 $T_0 = 2$
+
+\subsection{$x_5[n] = 3e^{j3/5(n+1/2)}$}
+
+$x_5[n] = 3e^{j\frac{3}{5}n} \times e^{j\frac{3}{10}}$， 后者为const，只需要关注前者的周期性即可。
+
+因为$\omega = \frac{3}{5}, \frac{2\pi}{\omega} = \frac{10\pi}{3} \notin \mathbb{Q}$， 因此有$x_5[n]$ 不为周期信号。
+
+\section* {第二题}
+
+$x_1(t) = 2\cos{(10t+1)}$ 的基波周期 $T_1 = \frac{2\pi}{10} = \frac{\pi}{5}$, $x_2(t) = -\sin{(4t-1)}$ 的基波周期 $T_2 = \frac{2\pi}{4} = \frac{\pi}{2}$。 因此， $x(t) = x_1(t) + x_2(t)$ 的基波周期为 $T_0 = k_1 T_1 = k_2 T_2 (k_1, k_2 \in \mathbb{N}) $ 于是有 $\frac{k_1}{k_2} = \frac{T_2}{T_1} = \frac{5}{2}$，因此有$T_0 = \pi$
+
+\section* {第三题}
+
+\subsection {输出信号}
+
+\begin{align}
+  y[n] &= y_1[n-2] + \frac{1}{2} y_1[n-3] \\
+       &= (2x[n-2] + 4x[n-3]) \\
+       &\quad + \frac{1}{2}\bigl(2x[n-3] + 4x[n-4]\bigr) \\
+       &= 2x[n-2] + 5x[n-3] + 2x[n-4].
+\end{align}
+
+\subsection {交换$S_1$、$S_2$次序}
+
+\begin{align}
+  y'[n] &= 2y_2[n] + 4y_2[n-1] \\
+        &= 2(x[n-2] + \frac{1}{2}x[n-3]) \\
+        &\quad + 4(x[n-3] + \frac{1}{2}x[n-4]) \\
+        &= 2x[n-2] + 5x[n-3] + 2x[n-4].
+\end{align}
+
+由上可得：交换次序后输入-输出关系不变。
+
+\section* {第四题}
+
+\subsection{是否有记忆性}
+
+$y[n] = x[n]x[n-2]$ 依赖于过往的输入值 $x[n-2]$， 因而有记忆。
+
+\subsection{输入为 $A\delta (n)$ 时的输出}
+
+$$y[n] = (A\delta [n])(A\delta [n-2]) = A^2 \delta[n]\delta[n-2] = 0$$
+
+\subsection{是否可逆}
+
+由上，系统显然不可逆。
+
+\section* {第五题}
+
+\subsection{因果性}
+
+系统不是因果的，因为当 $t < 0$ 时，$t < \sin{t}$， 而 $y(t) = x(\sin{t})$ 依赖未来值。
+
+\subsection{线性}
+
+系统是线性的，因为对于输入 $x(t) = ax_1(t) + bx_2(t)$：
+$$y(t) = x(\sin{t}) = ax_1(\sin{t}) + bx_2(\sin{t}) = ay_1(t) + by_2(t), \forall a, b \in \mathbb{C}$$
+
+\section* {第六题}
+
+\subsection{$x(t-1)$}
+
+\begin{tikzpicture}
+  \begin{axis}[
+    axis lines=middle,
+    xlabel={$x$}, ylabel={$y$},
+    xmin=-3, xmax=4,
+    ymin=-2, ymax=3,
+    xtick={-2,-1,0,1,2,3},
+    ytick={-1,1,2},
+    width=7cm, height=5cm,
+    scale only axis,
+    tick label style={font=\small},
+  ]
+    \addplot[
+      blue, thick,
+      mark=*, mark size=2pt,
+      mark options={fill=red, draw=red}
+    ] coordinates {
+      (-1,0) (-1,-1) (0,0) (0,1) (1,1)
+      (1,2) (2,2) (2,1) (3,0)
+    };
+  \end{axis}
+\end{tikzpicture}
+
+\subsection{$x(4-\frac{t}{2})$}
+
+\begin{tikzpicture}
+  \begin{axis}[
+    axis lines=middle,
+    xlabel = {$x$}, ylabel = {$y$},
+    xmin = -2, xmax = 15,
+    ymin = -2, ymax = 3.5,
+    width = 7cm, height = 5cm,
+    scale only axis,
+    tick label style={font=\small},
+  ]
+    \addplot[
+      blue, thick,
+      mark=*, mark size=2pt,
+      mark options={fill=red, draw=red}
+    ] coordinates {
+      (4,0) (6,1) (6,2) (8,2) (8,1) (10,1) (10,0) (12,-1) (12,0)
+    };
+  \end{axis}
+\end{tikzpicture}
+
+\subsection{$x(t)[\delta(t+\frac{3}{2})-\delta(t-\frac{3}{2})]$}
+
+\begin{tikzpicture}
+  \begin{axis}[
+    axis lines=middle,
+    xlabel={$x$}, ylabel={$y$},
+    xmin=-2, xmax=2,
+    ymin=-1, ymax=2,
+    width=7cm, height=5cm,
+    scale only axis,
+    tick label style={font=\small},
+  ]
+    \addplot[
+      only marks,
+      mark=*, mark size=2pt,red,
+    ] coordinates{
+      (-3/2, -1/2) (3/2, -1/2)
+    };
+
+    \node[below left] at (axis cs:-1, -1/2) {$(-\frac{3}{2}, -\frac{1}{2})$};
+    \node[below right] at (axis cs: 1, -1/2) {$(\frac{3}{2}, -\frac{1}{2})$};
+    
+  \end{axis}
+\end{tikzpicture}
+
+\section* {第七题}
+
+\subsection{$x(t) = e^{j(\pi t - 1)}$}
+
+$x(t) = e^{j \pi t} e^{-j}$ 为周期信号， 基波周期 $T_0 = \frac{2\pi}{\omega} = 2$
+
+\subsection{$x(t) = [\cos{(2t - \frac{\pi}{3})}]^2$}
+
+$x(t) = \frac{cos(4t - \frac{2\pi}{3}) + 1}{2}$ 为周期信号， 基波周期 $T_0 = \frac{2\pi}{\omega} = \frac{\pi}{2}$
+
+\subsection{$x(t) = Ev(\sin{(4\pi t)}u(t))$}
+
+\[
+  x(t) = \frac{\sin{(4\pi t)u(t)} + \sin{(-4\pi t)}u(-t)}{2} = \begin{cases}
+    \frac{\sin{(4\pi t)}}{2}, & t \ge 0, \\
+    -\frac{\sin{(4\pi t)}}{2}, & t < 0.
+  \end{cases}
+\]
+
+0 是 $x(t)$ 唯一的导数不连续点。 故不是周期函数。
+
+\section* {第八题}
+
+\subsection{$y(t) = x(t-2) + x(2-t)$}
+
+\begin{enumerate}
+  \item 不是无记忆的，因为不只依赖于当前时间的值。
+  \item 是时不变的，因为 $\forall t_0 \in \mathbb{R}$, 有
+        $$x_2(t) = x_1(t - t_0)$$
+        $$y_2(t) = x_2(t - 2) + x_2(2 - t) = x_1(t - t_0 - 2) + x_1(2 + t_0 - t) = y_1(t - t_0)$$
+  \item 是线性的， 因为$\forall a, b \in \mathbb{R}$, 有
+        \begin{align}
+          y(t) &= (ax_1+bx_2)(t-2) + (ax_1+bx_2)(2-t) \\
+               &= a(x_1(t-2) + x_1(2-t)) + b(x_2(t-2)+x_2(2-t)) \\
+               &= ay_1(t)+by_2(t)
+        \end{align}
+  \item 不是因果的，因为当$t=0$时，$y(0)=x(-2)+x(2)$依赖于未来值。
+  \item 是稳定的，因为若$\lvert x(t) \rvert < M, \forall t \in \mathbb{R}$ 则有：
+        $$\lvert y(t) \rvert < \lvert x(t-2) \rvert + \lvert x(2-t) \rvert < 2M$$
+\end{enumerate}
+
+\subsection{$y(t)=\int_{-\infty}^{2t}x(\tau)d\tau$}
+\begin{enumerate}
+  \item 显然有记忆，因为不只依赖于当前时间的值
+  \item 不是时不变的，因为$\forall t_0 \in \mathbb{R}, t_0 \ne 0$
+        $$x_2(t) = x_1(t - t_0)$$
+        $$y_2(t) = \int_{-\infty}^{2t}x_2(\tau)d\tau = \int_{-\infty}^{2t}x_1(\tau - t_0)d\tau = \int_{-\infty}^{2t - t_0} x_1(\tau) d\tau \ne y_1(t-t_0) $$
+  \item 是线性的，因为积分是线性算子。
+  \item 不是因果的，对于$t>0$ 时会依赖于未来值。
+  \item 不是稳定的， 取 
+        \[
+          x(t) = \begin{cases}
+            0, & t \le 0, \\
+            1, & t > 0.
+          \end{cases}
+        \]
+        显然$x(t)$有界而$y(t)$无限增长。
+\end{enumerate}
+
+\subsection{
+  \[
+    y(t) = \begin{cases}
+      0, &t < 0, \\
+      x(t) + x(t - 2). &t \ge 0
+    \end{cases}
+  \]
+}
+
+\begin{enumerate}
+  \item 显然有记忆，因为不只依赖于当前时间的值
+  \item 不是时不变的，不妨取$x_1(t) \equiv 1, t_0 > 0$
+        \[
+          y_2(t) = \begin{cases}
+            0, &t<0, \\
+            2, &t\ge 0.
+          \end{cases}
+        \]
+        而
+        \[
+          y_1(t - t_0) = \begin{cases}
+            0, &t<t_0, \\
+            2, &t\ge t_0.
+          \end{cases}
+        \]
+        显然$y_1(t-t_0) \ne y_2(t)$
+  \item 是线性的，因为$y(t)$是关于$t$分段线性的。
+  \item 是因果的，因为只依赖于现在即过往输入。
+  \item 是稳定的，证明类似于第一题的稳定性证明.
+\end{enumerate}
+
+\subsection{$y(t) = \frac{dx(t)}{dt}$}
+\begin{enumerate}
+  \item 有记忆的，不止取决于当前输入值
+  \item 是时不变的，因为对于$\forall t_0 \in \mathbb{R}$
+        $$x_2(t) = x_1(t-t_0)$$
+        $$y_2(t) = \frac{dx_2(t)}{dt} = \frac{dx_1(t-t_0)}{dt} = y_1(t-t_0)$$
+  \item 是线性的，因为微分是线性算子
+  \item 取决于实现方式，若使用左导数，可以认为是因果的，若采用双侧导数存在且相等，则不是因果的。
+  \item 不是稳定的，取$x(t) = \sin{(t^2)}$,则$y(t) = 2t \cos{(t^2)}$ 则有: \\
+        $$\lim_{n \rightarrow \infty}2\sqrt{2n\pi}\cos{(2n\pi)} = \infty$$
+\end{enumerate}
+
+\section* {第九题}
+
+\subsection{$y[n] = Re(x[n])$可加}
+
+显然，因为$Re(x_1 + x_2) = Re((a_1+jb_1) + (a_2+jb_2)) = a_1+a_2 = Re(x_1) + Re(x_2), \forall x_1, x_2 \in \mathbb{C}$。
+
+\subsection{$y[n] = Re(e^{\frac{j\pi n}{4}}x[n])$是否可加}
+
+依然可加， 因为:
+\begin{align}
+  & \quad Re((u + jv)((a_1+jb_1)+(a_2+jb_2))) \\
+  & = u(a_1+a_2)-v(b_1+b_2) \\
+  & = Re((u+jv)(a_1+jb_1)) + Re((u+jv)(a_2+jb_2))
+\end{align}
+
+\section* {第十题}
+
+已知线性时不变系统对$x_1(t)$的响应$y_1(t)$
+
+\subsection{绘制系统对$x_2(t)$的响应}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+  \draw[->] (-1,0) -- (5,0) node[right] {$x$};
+  \draw[->] (0,-3) -- (0,3) node[above] {$y$};
+
+  \draw[thick, blue]
+    (0,0) -- (1,2) -- (2,0) -- (3,-2) -- (4, 0);
+
+  \foreach \x in {1,2,3,4}
+    \draw (\x,0.05) -- (\x, -0.05)
+      node[below] {$\x$};
+
+  \node[below left] at (0,0) {$0$};
+  
+  \foreach \y in {-2,-1,1,2}
+    \draw (-0.05,\y) -- (0.05,\y)
+      node[left] {$\y$};
+  
+\end{tikzpicture}
+\end{center}
+
+\subsection{绘制系统对$x_3(t)$的响应}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+  \draw[->] (-2,0) -- (3,0) node[right] {$x$};
+  \draw[->] (0,-1) -- (0,3) node[above] {$y$};
+
+  \draw[thick,blue]
+    (-1,0) -- (0,2) -- (1,2) -- (2,0);
+
+  \foreach \x in {-1,1,2}
+    \draw (\x,-0.05) -- (\x,0.05)
+      node[below] {$\x$};
+
+  \node[below, left] at (0,-0.15) {$0$};
+
+  \foreach \y in {1,2}
+    \draw (-0.05,\y) -- (0.05,\y)
+      node[left] {$\y$};
+
+\end{tikzpicture}
+\end{center}
+
+\section* {第十一题}
+
+$$y_1[n] = x[2n], y_2[n] = \begin{cases}
+  x[\frac{n}{2}], & n \equiv 0 (mod 2), \\
+  0, & n \equiv 1 (mod 1).
+\end{cases}$$
+
+\subsection{$x[n]$周期$T_0 \longrightarrow y_1[n] \quad ?$}
+
+正确，其基波周期为
+
+$$ T_1 = \begin{cases}
+  T_0, &T_0 \equiv 1(mod 2), \\
+  \frac{T_0}{2}, &T_0 \equiv 0(mod 2).
+\end{cases}$$
+
+\subsection{$y_1[n]$周期$T_1 \longrightarrow x[n] \quad ?$}
+
+错误。不妨取$y_1[n] \equiv 0$为周期信号。定义
+$$ x[n] = \begin{cases}
+  0, &n\equiv 0(mod 2), \\
+  n, &n\equiv 1(mod 2).
+\end{cases}$$
+显然不为周期的，因为$y[n]$不稳定。
+
+\subsection{$x[n]$周期$T_0 \longrightarrow y_2[n] \quad ?$}
+
+正确，其基波周期为
+$$T_2 = \begin{cases}
+  1 & x[n] \equiv 0, \\
+  max(2, 2T_0) & x[n] \ne 0,
+\end{cases}$$
+
+\subsection{$y_2[n]$周期$T_2$ $\longrightarrow x[n] \quad ?$}
+
+正确，其基波周期为
+$$T_0 = \begin{cases}
+  1 & y_2[n] \equiv 0, \\
+  \frac{T_2}{2} & y_2[n] \equiv 0.
+\end{cases}$$
+
+\section* {第十二题}
+
+$x(t)=e^{j\omega_0 t}$,基波频率$\omega_0$,基波周期$T_0=\frac{2\pi}{\omega_0}$,等距采样得到$x[n]=e^{j\omega_0nT}$
+
+\subsection{$x[n]$是周期的$\Leftrightarrow \frac{T}{T_0} \in \mathbb{Q}$}
+
+$\qquad x[n]=e^{j\omega_0nT} 
+\quad$是周期的$\quad \Leftrightarrow \quad\frac{\omega}{2\pi} = \frac{\omega_0 T}{2\pi} = \frac{T}{T_0}\in \mathbb{Q}$
+
+\subsection{$x[n]$是周期的，即$\frac{T}{T_0}=\frac{p}{q}$时，求基波频率及基波周期。基波频率表示成$\omega_0T$的分式}
+
+假设$(p, q)$既约。
+
+$$T_0 = \frac{2\pi}{\omega_0} \Rightarrow T = \frac{p}{q} T_0 = \frac{2p\pi}{q\omega_0} \Rightarrow \frac{\omega}{2\pi} = \frac{\omega_0 T}{2\pi} = \frac{p}{q}$$
+
+因此，基波周期$T'=q$。基波频率$\omega'=\frac{2\pi}{T'}=\frac{2\pi}{q}=\frac{\omega_0 T}{p}$ 
+
+\subsection{同上假设。确定需要多少个$x(t)$的周期才能得到$x[n]$的一个样本}
+
+$$\frac{\omega_0 T T'}{2\pi} = \frac{\omega_0 \frac{pT_0}{q} q}{2\pi} = p$$
+
+\section* {第十三题}
+
+对系统$S$，输入$x[n]$与输出$y[n]$关系为
+$$y[n] = x[n]\{g[n]+g[n-1]\}$$
+
+\subsection{$g[n] \equiv 1$, 证明$S$是时不变的}
+
+$$y[n] = 2x[n]$$
+
+$\forall n_0 \in \mathbb{R}, x_2[n] = x_1[n-n_0]$， 有：
+$$y_2[n] = 2x_2[n] = 2x_1[n-n_0] = y_1[n-n_0]$$
+
+\subsection{$g[n] = n$,证明$S$不是时不变的}
+
+$$y[n] = (2n-1)x[n]$$
+
+对于$x_2[n] = x_1[n-1]$，有：
+$$y_2[n] = (2n-1)x_2[n] = (2n-1)x_1[n-1]$$ 
+$$y_1[n-1] = (2n-3)x[n-1] \ne y_2[n]$$
+
+\subsection{$g[n] = 1+(-1)^n$，证明$S$是时不变的}
+
+$$y[n] = x[n]\{(1+(-1)^n) + (1+(-1)^{n+1})\} = 2x[n]$$
+
+与第一问的形式一致，结论一致
+
+\section* {第十四题}
+
+以下仅证明连续系统的情况。离散系统同理。
+
+\subsection{两个线性时不变系统的级联仍线性时不变？}
+
+正确。记两个系统分别为：
+
+$$S_1: \quad y(t) = f(x(t))$$
+$$S_2: \quad y(t) = g(x(t))$$
+
+不妨设$S_1$输出为$S_2$输入，则其级联为 $y(t) = g(f(x(t)))$。 \\
+
+首先验证线性性。
+
+$$\forall a, b \in \mathbb{R}$$
+
+\begin{align}
+  y(t) &= gf(x(t)) = gf(ax_1(t)+bx_2(t)) \\
+       &= g(af(x_1(t)) + bf(x_2(t))) \\
+       &= agf(x_1(t)) + bgf(x_2(t)) \\
+       &= ay_1(t) + by_2(t)
+\end{align}
+
+然后验证时不变性。
+
+$$\forall t_0 \in \mathbb{R}, x_2(t) = x_1(t-t_0)$$
+
+记中间信号及最终输出为
+\[
+v_i(t)=S_1[x_i](t),\qquad
+y_i(t)=S_2[v_i](t),\qquad i=1,2.
+\]
+
+由 $S_1$ 的时不变性，
+\[
+v_2(t)=S_1[x_1(\cdot-t_0)](t)
+      =S_1[x_1](t-t_0)
+      =v_1(t-t_0).
+\]
+
+再由 $S_2$ 的时不变性，
+\[
+y_2(t)=S_2[v_1(\cdot-t_0)](t)
+      =S_2[v_1](t-t_0)
+      =y_1(t-t_0).
+\]
+
+
+
+\subsection{两个非线性系统的级联仍非线性？}
+
+错误。构造以下两个非系统：
+
+$$S_1: \quad y(t) = \sqrt[3]{x(t)}$$
+$$S_2: \quad y(t) = (x(t))^3$$
+
+其串联显然线性。
+
+\end{document}
