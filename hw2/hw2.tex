@@ -1,0 +1,508 @@
+\documentclass[UTF8, fontset=fandol,12pt, a4paper]{ctexart}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{titling}
+\setlength{\droptitle}{-1.5cm}
+\setlength{\parskip}{0.4em}
+\ctexset{section={format=\large\bfseries,beforeskip=1.2em,afterskip=0.6em}}
+
+\title{\LARGE 信号与系统分析\\[0.3em]\large 第二次作业}
+\author{黄泱博 \quad 2024012867}
+\date{\today}
+
+\begin{document}
+\pagestyle{plain}
+\maketitle
+
+\section* {2.3 求卷积并绘图}
+
+输入与冲激响应分别为
+\[
+  x[n]=\left(\frac12\right)^{n-2}u[n-2],
+  \qquad h[n]=u[n+2].
+\]
+离散时间卷积为
+\begin{align*}
+  y[n] &= x[n]*h[n]
+       = \sum_{k=-\infty}^{\infty}x[k]h[n-k] \\
+       &= \sum_{k=-\infty}^{\infty}
+          \left(\frac12\right)^{k-2}u[k-2]u[n-k+2].
+\end{align*}
+要求 $2\le k\le n+2$，只有当 $n\ge0$ 时求和区间非空。
+\[
+  y[n]=\begin{cases}
+      0, & n<0,\\[0.4em]
+      \displaystyle\sum_{k=2}^{n+2}\left(\frac12\right)^{k-2}
+      =\frac{1-(1/2)^{n+1}}{1-1/2}, & n\ge0.
+    \end{cases}
+\]
+最终结果为
+\[
+  \boxed{y[n]=\left[2-\left(\frac12\right)^n\right]u[n].}
+\]
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.85\textwidth,height=5.4cm,
+    axis lines=middle,
+    xlabel={$n$},ylabel={$y[n]$},
+    xmin=-3.6,xmax=9.8,ymin=-0.2,ymax=2.45,
+    xtick={-3,-2,...,9},ytick={1,1.5,2},
+    tick label style={font=\small},
+  ]
+    \addplot[gray,dashed,domain=-3.3:9.3] {2};
+    \addplot[ycomb,blue!70!black,thick,mark=*,mark size=2pt]
+      coordinates {(-3,0) (-2,0) (-1,0)};
+    \addplot[ycomb,blue!70!black,thick,mark=*,mark size=2pt,
+      domain=0:9,samples=10] {2-(1/2)^x};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section* {2.8 求卷积并绘图}
+
+输入与冲激响应分别为
+\[
+  x(t)=\begin{cases}
+    t+1, &0 \le t \le 1,\\[0.3em]
+    2-t, &1<t \le 2,\\[0.3em]
+    0, &\text{其他},
+  \end{cases}
+  \qquad h(t)=\delta(t+2)+2\delta(t+1).
+\]
+
+\begin{align*}
+  y(t) &= x(t)*h(t) \\
+       &= x(t)*\delta(t+2)+2x(t)*\delta(t+1) \\
+       &= x(t+2)+2x(t+1).
+\end{align*}
+
+最终结果为
+\[
+  \boxed{
+  y(t)=\begin{cases}
+    t+3, &-2\le t<-1,\\[0.3em]
+    4, &t=-1,\\[0.3em]
+    t+4, &-1<t\le0,\\[0.3em]
+    2-2t, &0<t\le1,\\[0.3em]
+    0, &\text{其他}.
+  \end{cases}}
+\]
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.85\textwidth,height=6cm,
+    axis lines=middle,
+    xlabel={$t$},ylabel={$y(t)$},
+    xmin=-3,xmax=2,ymin=-0.45,ymax=4.65,
+    xtick={-2,-1,0,1},ytick={1,2,3,4},
+    tick label style={font=\small},
+  ]
+    \addplot[blue!70!black,thick] coordinates {(-2.8,0) (-2,0)};
+    \addplot[blue!70!black,thick] coordinates {(-2,1) (-1,2)};
+    \addplot[blue!70!black,thick] coordinates {(-1,3) (0,4)};
+    \addplot[blue!70!black,thick] coordinates {(0,2) (1,0) (1.8,0)};
+    \addplot[only marks,mark=*,mark size=2.5pt,
+      blue!70!black,mark options={fill=white}]
+      coordinates {(-2,0) (-1,2) (-1,3) (0,2)};
+    \addplot[only marks,mark=*,mark size=2.5pt,blue!70!black]
+      coordinates {(-2,1) (-1,4) (0,4) (1,0)};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section* {2.16 判断正误}
+(a)正确 
+(b)错误
+(c)正确
+(d)正确
+
+\section* {2.22 求响应并画简图}
+
+\subsection* {(b)}
+\begin{align*}
+  y(t) &= x(t)*h(t)
+        = \int_{-\infty}^{\infty}h(\tau)x(t-\tau)\,d\tau \\
+       &= \frac{4}{3}\int_{0}^{1}x(t-\tau)\,d\tau
+          -\frac{1}{3}x(t-2) \\
+       &= \frac{4}{3}\int_{0}^{1}\bigl[a(t-\tau)+b\bigr]\,d\tau
+          -\frac{1}{3}\bigl[a(t-2)+b\bigr] \\
+       &= \boxed{at+b}.
+\end{align*}
+
+\begin{center}
+\begin{tikzpicture}[x=1.6cm,y=1.1cm]
+  \draw[->] (-2.3,0) -- (3.4,0) node[right] {$t$};
+  \draw[->] (0,-0.9) -- (0,3.8) node[above] {$y(t)$};
+  \draw[blue!70!black,thick] (-2,-0.5) -- (3,3.25)
+    node[above left,black] {$y(t)=at+b$};
+  \fill[blue!70!black] (0,1) circle (1.8pt);
+  \node[left] at (0,1) {$b$};
+  \node[below left] at (0,0) {$0$};
+\end{tikzpicture}
+
+\end{center}
+
+\newpage
+\subsection* {(e)}
+由于 $x(t)$ 的周期性，只需考虑
+\[
+  t^*=t-2k\in\left[-\frac12,\frac32\right],\qquad k\in\mathbb{Z}.
+\]
+\begin{align*}
+  y(t) &= x(t)*h(t)
+        = \int_{-\infty}^{\infty}x(t-\tau)h(\tau)\,d\tau \\
+       &= \int_{0}^{1}x(\tau-t)(1-\tau)\,d\tau \\
+       &= \begin{cases}
+          \begin{aligned}
+            &\displaystyle\int_{0}^{\frac12-t^*}(1-\tau)\,d\tau
+             -\int_{\frac12-t^*}^{1}(1-\tau)\,d\tau\\[0.3em]
+            &\displaystyle=-(t^*)^2-t^*+\frac14,
+          \end{aligned}
+          &-\dfrac12<t^*<\dfrac12,\\[1.2em]
+          \begin{aligned}
+            &\displaystyle-\int_{0}^{\frac32-t^*}(1-\tau)\,d\tau
+             +\int_{\frac32-t^*}^{1}(1-\tau)\,d\tau\\[0.3em]
+            &\displaystyle=(t^*)^2-t^*-\frac14,
+          \end{aligned}
+          &\dfrac12<t^*<\dfrac32.
+        \end{cases}
+\end{align*}
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.9\textwidth,height=5.8cm,
+    axis lines=middle,
+    xlabel={$t$},ylabel={$y(t)$},
+    xmin=-2.8,xmax=3.85,ymin=-0.7,ymax=0.75,
+    xtick={-2.5,-1.5,-0.5,0.5,1.5,2.5,3.5},
+    xticklabels={$-\frac52$,$-\frac32$,$-\frac12$,$\frac12$,
+      $\frac32$,$\frac52$,$\frac72$},
+    ytick={-0.5,0.5},yticklabels={$-\frac12$,$\frac12$},
+    tick label style={font=\small},
+  ]
+    \foreach \k in {-1,0,1} {
+      \addplot[blue!70!black,thick,samples=80,
+        domain={2*\k-0.5}:{2*\k+0.5}]
+        {-(x-2*\k)^2-(x-2*\k)+0.25};
+      \addplot[blue!70!black,thick,samples=80,
+        domain={2*\k+0.5}:{2*\k+1.5}]
+        {(x-2*\k)^2-(x-2*\k)-0.25};
+    }
+    \addplot[only marks,mark=*,mark size=2.2pt,
+      blue!70!black,mark options={fill=blue!70!black}]
+      coordinates {(-2.5,0.5) (-1.5,-0.5) (-0.5,0.5)
+        (0.5,-0.5) (1.5,0.5) (2.5,-0.5) (3.5,0.5)};
+  \end{axis}
+\end{tikzpicture}
+
+{\small 按上述分段式绘制，周期为 $2$。}
+\end{center}
+
+\section* {2.24 已知级联及$h_2[n]$}
+
+\subsection* {(a)}
+易知：
+\[
+  u[n-n_1]*u[n-n_2]=(n-n_1-n_2+1)u[n-n_1-n_2],
+\]
+有：
+\begin{align*}
+  h_2[n]*h_2[n]
+    &=\bigl(u[n]-u[n-2]\bigr)*\bigl(u[n]-u[n-2]\bigr) \\
+    &=(n+1)u[n]-2(n-1)u[n-2]+(n-3)u[n-4] \\
+    &=\begin{cases}
+        1, &n=0,2,\\[0.3em]
+        2, &n=1,\\[0.3em]
+        0, &\text{其他}.
+      \end{cases}
+\end{align*}
+又由：
+\begin{align*}
+  h[n] &=h_2[n]*h_2[n]*h_1[n] \\
+       &=\bigl(h_2[n]*h_2[n]\bigr)*h_1[n] \\
+       &=h_1[n]+2h_1[n-1]+h_1[n-2].
+\end{align*}
+
+解方程得：
+\[
+  \boxed{
+  h_1[n]=\begin{cases}
+    1, &n=0,4,\\[0.3em]
+    3, &n=1,2,\\[0.3em]
+    2, &n=3,\\[0.3em]
+    0, &\text{其他}.
+  \end{cases}}
+\]
+
+\newpage
+\subsection* {(b)}
+由于：
+\[
+  x[n]=\delta[n]-\delta[n-1],
+\]
+有：
+\begin{align*}
+  y[n] &=h[n]*x[n]=h[n]-h[n-1] \\
+       &=\boxed{\begin{cases}
+          1, &n=0,3,\\[0.3em]
+          4, &n=1,\\[0.3em]
+          5, &n=2,\\[0.3em]
+          -3, &n=4,6,\\[0.3em]
+          -4, &n=5,\\[0.3em]
+          -1, &n=7,\\[0.3em]
+          0, &\text{其他}.
+        \end{cases}}
+\end{align*}
+
+\section* {2.31 已知差分方程求响应}
+
+输入为
+\[
+  x[n]=\begin{cases}
+    1, &n=-2,3,\\[0.3em]
+    2, &n=-1,1,2,\\[0.3em]
+    3, &n=0,\\[0.3em]
+    0, &\text{其他}.
+  \end{cases}
+\]
+差分方程为
+\[
+  y[n]+2y[n-1]=x[n]+2x[n-2].
+\]
+
+由初始松弛条件有 $y[n]=0,\ \forall n<-2$。逐项代入得
+\begin{align*}
+  y[-2]+2y[-3] &=x[-2]+2x[-4]=1
+    &&\Longrightarrow y[-2]=1,\\
+  y[-1]+2y[-2] &=x[-1]+2x[-3]=2
+    &&\Longrightarrow y[-1]=0,\\
+  y[0]+2y[-1] &=x[0]+2x[-2]=5
+    &&\Longrightarrow y[0]=5,\\
+  y[1]+2y[0] &=x[1]+2x[-1]=6
+    &&\Longrightarrow y[1]=-4,\\
+  y[2]+2y[1] &=x[2]+2x[0]=8
+    &&\Longrightarrow y[2]=16,\\
+  y[3]+2y[2] &=x[3]+2x[1]=5
+    &&\Longrightarrow y[3]=-27,\\
+  y[4]+2y[3] &=x[4]+2x[2]=4
+    &&\Longrightarrow y[4]=58,\\
+  y[5]+2y[4] &=x[5]+2x[3]=2
+    &&\Longrightarrow y[5]=-114.
+\end{align*}
+
+当 $n\ge6$ 时，$x[n]=x[n-2]=0$，故
+\[
+  y[n]=-2y[n-1],\qquad
+  y[n]=y[5](-2)^{n-5}=-114(-2)^{n-5}.
+\]
+最终结果为
+\[
+  \boxed{
+  y[n]=\begin{cases}
+    0, &n<-2\ \text{或}\ n=-1,\\[0.3em]
+    1, &n=-2,\\[0.3em]
+    5, &n=0,\\[0.3em]
+    -4, &n=1,\\[0.3em]
+    16, &n=2,\\[0.3em]
+    -27, &n=3,\\[0.3em]
+    58, &n=4,\\[0.3em]
+    -114(-2)^{n-5}, &n\ge5.
+  \end{cases}}
+\]
+
+\section* {2.38 画出差分因果LTI的框图表示}
+
+\subsection *{(a) $y[n]=\frac{1}{3}y[n-1]+\frac{1}{2}x[n]$}
+
+\begin{center}
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=1.1cm,minimum height=0.8cm},
+  sum/.style={draw,circle,minimum size=0.65cm,inner sep=0pt},
+  >=stealth,thick]
+  \node[block] (inputgain) at (-2,0) {$\frac12\delta[n]$};
+  \node[sum] (sum) at (0,0) {$+$};
+  \node[block] (feedbackgain) at (1.25,-2) {$\frac13\delta[n-1]$};
+  \draw[->] (-4,0) node[left] {$x[n]$} -- (inputgain.west);
+  \draw[->] (inputgain.east) -- (sum.west);
+  \draw[->] (sum.east) -- (4,0) node[right] {$y[n]$};
+  \fill (2.5,0) circle (1.8pt);
+  \draw[->] (2.5,0) |- (feedbackgain.east);
+  \draw[->] (feedbackgain.west) -| (sum.south);
+\end{tikzpicture}
+\end{center}
+
+\subsection*{(b) $y[n]=\frac{1}{3}y[n-1]+x[n-1]$}
+
+\begin{center}
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=1.1cm,minimum height=0.8cm},
+  sum/.style={draw,circle,minimum size=0.65cm,inner sep=0pt},
+  >=stealth,thick]
+  \node[block] (inputdelay) at (-2,0) {$\delta[n-1]$};
+  \node[sum] (sum) at (0,0) {$+$};
+  \node[block] (feedbackgain) at (1.25,-2) {$\frac13\delta[n-1]$};
+  \draw[->] (-4,0) node[left] {$x[n]$} -- (inputdelay.west);
+  \draw[->] (inputdelay.east) -- (sum.west);
+  \draw[->] (sum.east) -- (4,0) node[right] {$y[n]$};
+  \fill (2.5,0) circle (1.8pt);
+  \draw[->] (2.5,0) |- (feedbackgain.east);
+  \draw[->] (feedbackgain.west) -| (sum.south);
+\end{tikzpicture}
+\end{center}
+
+\section* {2.39 画出微分因果LTI的框图表示}
+
+在初始松弛条件下，将积分合并为一个积分环节。
+
+\subsection* {(a) $y(t)=-\frac{1}{2}\frac{dy(t)}{dt}+4x(t)$}
+\[
+  \frac{dy(t)}{dt}=8x(t)-2y(t)
+  \quad\Longrightarrow\quad
+  y(t)=u(t)*\bigl[8x(t)-2y(t)\bigr].
+\]
+\begin{center}
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=1.2cm,minimum height=0.8cm},
+  sum/.style={draw,circle,minimum size=0.65cm,inner sep=0pt},
+  >=stealth,thick]
+  \node[block] (inputgain) at (-2,0) {$8\delta(t)$};
+  \node[sum] (sum) at (0,0) {$+$};
+  \node[block] (integrator) at (2,0) {$\displaystyle\int$};
+  \node[block] (feedbackgain) at (1.8,-2) {$-2\delta(t)$};
+  \draw[->] (-4,0) node[left] {$x(t)$} -- (inputgain.west);
+  \draw[->] (inputgain.east) -- (sum.west);
+  \draw[->] (sum.east) -- (integrator.west);
+  \draw[->] (integrator.east) -- (4.5,0) node[right] {$y(t)$};
+  \fill (3.6,0) circle (1.8pt);
+  \draw[->] (3.6,0) |- (feedbackgain.east);
+  \draw[->] (feedbackgain.west) -| (sum.south);
+\end{tikzpicture}
+\end{center}
+
+\subsection* {(b) $\frac{dy(t)}{dt}+3y(t)=x(t)$}
+\[
+  \frac{dy(t)}{dt}=x(t)-3y(t)
+  \quad\Longrightarrow\quad
+  y(t)=u(t)*\bigl[x(t)-3y(t)\bigr].
+\]
+\begin{center}
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=1.2cm,minimum height=0.8cm},
+  sum/.style={draw,circle,minimum size=0.65cm,inner sep=0pt},
+  >=stealth,thick]
+  \node[sum] (sum) at (0,0) {$+$};
+  \node[block] (integrator) at (2,0) {$\displaystyle\int$};
+  \node[block] (feedbackgain) at (1.8,-2) {$-3\delta(t)$};
+  \draw[->] (-4,0) node[left] {$x(t)$} -- (sum.west);
+  \draw[->] (sum.east) -- (integrator.west);
+  \draw[->] (integrator.east) -- (4.5,0) node[right] {$y(t)$};
+  \fill (3.6,0) circle (1.8pt);
+  \draw[->] (3.6,0) |- (feedbackgain.east);
+  \draw[->] (feedbackgain.west) -| (sum.south);
+\end{tikzpicture}
+\end{center}
+
+\newpage
+\raggedbottom
+\section* {2.40 求系统响应}
+
+\subsection* {(a) 求单位冲激响应}
+系统的输入输出关系为
+\[
+  y(t)=\int_{-\infty}^{t}e^{-(t-\tau)}x(\tau-2)\,d\tau.
+\]
+令 $x(t)=\delta(t)$，得到
+
+\begin{align*}
+  h(t) &=\int_{-\infty}^{t}e^{-(t-\tau)}\delta(\tau-2)\,d\tau \\
+       &=\boxed{\begin{cases}
+          0, &t<2,\\[0.3em]
+          e^{-(t-2)}, &t\ge2.
+        \end{cases}}
+\end{align*}
+
+\subsection* {(b) 根据给定输入求响应}
+
+\begin{align*}
+  y(t) &=x(t)*h(t)
+        =\int_{-\infty}^{\infty}x(t-\tau)h(\tau)\,d\tau \\
+       &=\int_{2}^{\infty}x(t-\tau)e^{-(\tau-2)}\,d\tau \\
+       &=\begin{cases}
+          0, &t<1,\\[0.5em]
+          \displaystyle\int_{2}^{t+1}e^{-(\tau-2)}\,d\tau,
+            &1\le t\le4,\\[0.8em]
+          \displaystyle\int_{t-2}^{t+1}e^{-(\tau-2)}\,d\tau,
+            &t>4.
+        \end{cases}
+\end{align*}
+计算得
+\[
+  \boxed{
+  y(t)=\begin{cases}
+    0, &t<1,\\[0.4em]
+    1-e^{1-t}, &1\le t\le4,\\[0.4em]
+    e^{-(t-1)}(e^3-1), &t>4.
+  \end{cases}}
+\]
+
+\newpage
+\section* {2.48}
+
+\noindent (a) 正确。取$x(t)=h(-t)$，则$y(0)=\int_{-\infty}^{\infty}x(-\tau)h(\tau)d\tau=\int_{-\infty}^{\infty}(h(\tau))^2d\tau=\infty$
+
+\noindent (b) 不正确。因果 LTI 系统 $y(t)=x(t-1)$ 的逆系统 $x(t)=y(t+1)$ 是非因果的
+
+\noindent (c) $K=0$时显然正确,$k\ne0$时显然不正确:构造$h[n] \equiv \frac{K}{2}$即可。
+
+\noindent (d) 正确。因为$h[n]$有限，显然$\sum_{k-\infty}^{\infty}|h(k)|<\infty$
+
+\noindent (e) 不正确。构造因果LTI$y(t)=\int_{-\infty}^{t}x(\tau)d\tau$，对于有界输入$x(t)\equiv 1$会爆破。
+
+\noindent (f) 不正确。由(b)显然。非因果和因果系统的级联是identity，显然因果。
+
+\noindent (g) 不正确。构造$h(t)=e^{-t}u(t)$,$\int_{-\infty}^{\infty}|h(t)|dt=\int_{0}^{\infty}e^{-t}dt=1$稳定，但是$s(t)=\int_{-\infty}^{t}h(\tau)d\tau=(1-e^{-t})u(t), \int_{-\infty}^{\infty}|s(t)|dt=\int_{0}^{\infty}(1-e^{-t})dt=\infty$
+
+\noindent (h) 正确。因为$h[n]=s[n]-s[n-1]$,$s[n]=0,\forall n<0 \Leftrightarrow h[n]=0,\forall n<0$
+
+\section* {2.51}
+\subsection* {(a) $h[n]=(\frac{1}{2})^nu[n],z[n]=nw[n]$系统级联不可交换}
+
+\noindent 取输入信号$x[n] \equiv 1$ \\
+对于第一种级联方式：
+\[
+  w[n]=\sum_{k=-\infty}^{\infty}x[n-k]h[k]=\sum_{k=0}^{\infty}(\frac{1}{2})^k=2 
+\]
+
+$$y_1[n]=z[n]=nw[n]=2n$$
+
+\noindent 对于第二种级联方式：
+$$z[n]=nx[n]=n$$
+
+\[
+  y_2[n]=\sum_{k=-\infty}^{\infty}z[n-k]h[k]=\sum_{k=0}^{\infty}(n-k)(\frac{1}{2})^k=2n-2
+\]
+
+\noindent 显然$y_1[n]\ne y_2[n]$，不可交换。
+
+\subsection* {(b) 替换为$z[n]=w[n]+2$重新计算}
+
+\noindent 取输入信号$x[n] \equiv 1$ \\
+对于第一种级联方式：
+$$w[n]=2$$
+$$y_1[n]=w[n]+2=4$$
+
+\noindent 对于第二种级联方式：
+$$z[n]=x[n]+2=3$$
+\[
+  y_2[n]=\sum_{k=-\infty}^{\infty}z[n-k]h[k]=\sum_{k=0}^{\infty}3(\frac{1}{2})^k=6
+\]
+
+\noindent 同样有$y_1[n]\ne y_2[n]$不可交换。
+
+\end{document}
