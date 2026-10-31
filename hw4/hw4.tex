@@ -1,0 +1,155 @@
+\documentclass[UTF8,fontset=fandol,12pt,a4paper]{ctexart}
+\usepackage{amssymb, amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\title{信号与系统分析-hw4}
+\author{黄泱博\quad2024012867}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{4.11}
+\noindent 记 $x'(t)=x(3t),h'(t)=h(3t)$，则$X'(j\omega)=\frac{1}{3}X(\frac{j\omega}{3}),H'(t)=\frac{1}{3}H(\frac{j\omega}{3})$\\
+于是$G(j\omega)=X'(j\omega)H'(j\omega)=\frac{1}{9}X(\frac{j\omega}{3})H(\frac{j\omega}{3})=\frac{1}{9}Y(\frac{j\omega}{3})$\\
+从而有$g(t)=\frac{1}{3}y(3t)$.即：$A=\frac{1}{3},B=3$
+
+\section*{4.13}
+\subsection*{(a)}
+$x(t)$不是周期的，因为找不到$T$，使得$\pi$与5均是其整数倍。
+\subsection*{(b)}
+\[h(t)=u(t)-u(t-2) \Rightarrow H(j\omega)=\int_{0}^{2}e^{-j\omega t}dt=\frac{1}{j\omega}(1-e^{-j2\omega})\]
+\[\mathcal{F}(x(t)*h(t))=X(j\omega)H(j\omega)=\frac{1}{j\omega}(1-e^{-j2\omega})(\delta(\omega)+\delta(\omega-\pi)+\delta(\omega-5))\]
+\[\Longrightarrow\mathcal{F}(x(t)*(y(t)))=2\delta(\omega)+\frac{1}{j5}(1-e^{-j10})\delta(\omega-5)\]
+因此有$x(t)*y(t)$是周期的。
+\subsection*{(c)}
+由(b)中讨论即有，非周期信号的卷积可能是周期的。
+
+\section*{4.15}
+\[x(t)\in\mathbb{R}\Rightarrow X(j\omega)=X^*(-j\omega)\Rightarrow \mathfrak{R}(X(j\omega))=\frac{X(j\omega)+X^*(j\omega)}{2}=\frac{X(j\omega)+X(-j\omega)}{2}\]
+\[|t|e^{-|t|}=\frac{1}{2\pi}\int_{-\infty}^{\infty}\mathfrak{R}(X(j\omega))e^{j\omega t}d\omega=\frac{x(t)+x(-t)}{2}\]
+\[x(t)=0,\forall t<0\Rightarrow x(t)=2|t|e^{-|t|}u(t)=2te^{-t}u(t)\]
+
+\section*{4.17}
+\subsection*{(a)}
+\[x^*(t)=-x(t)\Rightarrow X^*(-j\omega)=-X(j\omega)\]
+\[x(-t)=-x(t)\Rightarrow X(-j\omega)=-X(j\omega)\]
+\[\Longrightarrow X^*(j\omega)=X(j\omega)\Longrightarrow X(j\omega)\in\mathbb{R}\]
+因此判断错误。纯虚奇函数的Fourier变换是实奇函数。
+\subsection*{(b)}
+\[X(-j\omega)=-X(j\omega) \Rightarrow x(-t)=-x(t)\]
+\[Y(-j\omega)=Y(j\omega) \Rightarrow y(-t)=y(t)\]
+\[\mathcal{F}^{-1}(X(j\omega)*Y(j\omega))=2\pi x(t)y(t)\]因此判断正确。$x(t)y(t)$是奇函数$\Rightarrow X(j\omega)*Y(j\omega)$是奇函数。
+
+\section*{4.19}
+\[y(t)=e^{-3t}u(t)-e^{-4t}u(t)\Rightarrow Y(j\omega)=\frac{1}{j\omega+3}-\frac{1}{j\omega+4}\]
+\[H(j\omega)=\frac{1}{j\omega+3}\Rightarrow X(j\omega)=\frac{Y(j\omega)}{H(j\omega)}=\frac{1}{j\omega+4}\Rightarrow x(t)=e^{-4t}u(t)\]
+
+\section*{4.21}
+\subsection*{(a)}
+\[e^{-\alpha t}\cos{(\omega_0 t)}u(t)=\frac{e^{j\omega_0 t}+e^{-j\omega_0 t}}{2}e^{-\alpha t}u(t)\]
+\[\Longrightarrow \mathcal{F}(e^{-\alpha t}\cos{(\omega_0 t)}u(t))=\frac{1}{2(j(\omega-\omega_0)+\alpha)}+\frac{1}{2(j(\omega+\omega_0)+\alpha)}\]
+\subsection*{(c)}
+\[x(t)=\begin{cases}
+  1+\cos{(\pi t)} &|t|\le 1 \\
+  0 &|t|>1
+\end{cases}\]
+方波的 Fourier变换 为$\frac{2\sin{(\omega)}}{\omega}$，余弦的 Fourier变换 为 \\
+$$\int_{-1}^{1}\cos{(\pi t)}e^{-j\omega t}dt=\frac{\sin{(\omega+\pi)}}{\omega+\pi}+\frac{\sin{(\omega-\pi)}}{\omega-\pi}$$
+\[\Longrightarrow \mathcal{F}(x(t))=\frac{2\sin{(\omega)}}{\omega}+\frac{\sin{(\omega+\pi)}}{\omega+\pi}+\frac{\sin{(\omega-\pi)}}{\omega-\pi}\]
+\subsection*{(f)}
+\[\mathcal{F}(\frac{\sin{(\pi t)}}{\pi t})=\begin{cases}
+  1 &|\omega|\le \pi\\
+  0 &|\omega|>\pi
+\end{cases}\]
+\[\mathcal{F}(\frac{\sin{(2\pi(t-1))}}{\pi (t-1)})=\begin{cases}
+  e^{-j\omega} &|\omega|\le 2\pi\\
+  0 &|\omega|>2\pi
+\end{cases}\]
+
+\[\mathcal{F}(\frac{\sin{(\pi t)}}{\pi t}\times \frac{\sin{(2\pi(t-1))}}{\pi (t-1)})=\frac{1}{2\pi}\mathcal{F}(\frac{\sin{(\pi t)}}{\pi t})*\mathcal{F}(\frac{\sin{(2\pi(t-1))}}{\pi (t-1)})\]
+最终结果为\[\frac{1}{2\pi}\begin{cases}
+  0 &\omega<-3\pi\\
+  \frac{1}{j}(1+e^{-j\omega}) &-3\pi\le\omega<-\pi\\
+  0 &-\pi\le\omega<\pi\\
+  -\frac{1}{j}(1+e^{-j\omega}) &\pi\le\omega<3\pi\\
+  0 &\omega\ge 3\pi
+
+\end{cases}\]
+
+\section*{4.25}
+首先可以将$x(t+1)$关于y轴对称可以视作$2x_1(t)-x_2(t)*x_2(t)$，其中$x_1(t)$为宽为4的方波脉冲，$x_2(t)$为宽为1的方波脉冲。于是有：
+\[\mathcal{F}(x(t+1))=2\frac{2\sin{(2\omega)}}{\omega}-\frac{4\sin^2{(\frac{1}{2}\omega)}}{\omega^2}\]
+\[\Longrightarrow X(j\omega)=4e^{-j\omega}(\frac{\sin{(2\omega)}}{\omega}-\frac{\sin^2{(\frac{1}{2}\omega)}}{\omega^2})\]
+
+\subsection*{(a)}
+记$A(j\omega)=4(\frac{\sin{(2\omega)}}{\omega}-\frac{\sin^2{(\frac{1}{2}\omega)}}{\omega^2})$
+\[\arg(X(j\omega))=\begin{cases}
+  -\omega &A(j\omega)>0\\
+  -\omega+\pi &A(j\omega)<0
+\end{cases}\]
+\indent$A(j\omega)=0$时，无定义
+\subsection*{(b)}
+\[X(j0)=\lim_{\omega\rightarrow0}X(j\omega)=7\]
+\subsection*{(c)}
+\[\int_{-\infty}^{\infty}X(j\omega)d\omega=2\pi x(0)=4\pi\]
+\subsection*{(d)}
+$\frac{2\sin{\omega}}{\omega}$对应于一个宽度为2的方波脉冲$y(t)$。因此$X(j\omega)\frac{2\sin{\omega}}{\omega}$对应于两者相卷$x(t)*y(t)$。从而有：
+\[\int_{-\infty}^{\infty}X(j\omega)\frac{2\sin{\omega}}{\omega}e^{j2\omega}d\omega=2\pi(x*y)(2)=2\pi\int_{1}^{3}x(\tau)d\tau=7\pi\]
+\subsection*{(e)} 
+\[\int_{-\infty}^{\infty}|X(j\omega)|^2d\omega=2\pi\int_{-\infty}^{\infty}|x(t)|^2dt=\frac{76\pi}{3}\]
+\subsection*{(f)}
+\[\mathcal{R}(X(j\omega))=\frac{e^{j\omega}+e^{-j\omega}}{2}\times4(\frac{\sin{(2\omega)}}{\omega}-\frac{\sin^2{(\frac{1}{2}\omega)}}{\omega^2})\]
+前者的 Fourier逆变换为$\frac{1}{2}(\delta(t-1)+\delta(t+1))$，后者的为$x(t+1)$。有
+\[
+\mathcal{F}^{-1}\{\operatorname{Re}X(j\omega)\}
+=\frac{x(t)+x(t+2)}{2}
+\]
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.92\linewidth,height=6cm,
+  axis lines=middle,xmin=-3.7,xmax=3.7,ymin=-0.2,ymax=2.4,
+  xlabel={$t$},ylabel={$g(t)$},
+  xtick={-3,-2,-1,0,1,2,3},ytick={0.5,1,1.5,2},
+  yticklabels={$\frac12$,$1$,$\frac32$,$2$},
+  tick label style={font=\small},clip=false]
+\addplot[blue,thick] coordinates {(-3.6,0) (-3,0)};
+\addplot[blue,thick] coordinates {(-3,1) (-2,1) (-1,0.5)};
+\addplot[blue,thick] coordinates {(-1,1.5) (0,2) (1,1.5)};
+\addplot[blue,thick] coordinates {(1,0.5) (2,1) (3,1)};
+\addplot[blue,thick] coordinates {(3,0) (3.6,0)};
+\addplot[blue,densely dashed] coordinates {(-3,0) (-3,1)};
+\addplot[blue,densely dashed] coordinates {(-1,0.5) (-1,1.5)};
+\addplot[blue,densely dashed] coordinates {(1,0.5) (1,1.5)};
+\addplot[blue,densely dashed] coordinates {(3,0) (3,1)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section*{4.30}
+\[G(j\omega)=\begin{cases}
+  1 &|\omega|\le2\\
+  0 &|\omega|>2
+\end{cases}\Rightarrow g(t)=\frac{\sin{2t}}{\pi t}\]
+\subsection*{(a)}
+\[x(t)=\frac{g(t)}{\cos{t}}=\frac{2\sin{t}}{\pi t}\]
+\subsection*{(b)}
+不存在这样的$x_1(t)$，因为若存在则有：
+\[0\ne g(\frac{3}{4}\pi)=x_1(\frac{3}{4}\pi)cos{(\frac{2}{3}\times\frac{3}{4}\pi)}=0\]
+
+\section*{4.39}
+\subsection*{(a)}
+\[x(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}X(j\omega)e^{j\omega t}d\omega\]
+\[\Longrightarrow x(-t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}X(j\omega)e^{-j\omega t}d\omega\]
+\[\Longrightarrow \int_{-\infty}^{\infty}X(j\omega)e^{-j\omega t}d\omega=2\pi x(-t)\]
+\[\Longrightarrow \int_{-\infty}^{\infty}X(jt)e^{-j\omega t}dt=2\pi x(-\omega)\]
+
+\subsection*{(b)}
+令$g(t)=e^{jBt}, x(t)=\delta(t+B)$，有$g(t)=X(jt)$，由(a)中结论即有：
+\[\mathcal{F}(e^{jBt})=G(j\omega)=2\pi x(-\omega)=2\pi\delta(-\omega+B)=2\pi\delta(\omega-B)\]
+
+
+\end{document}
